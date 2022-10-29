@@ -14,4 +14,6 @@ package com.example.common.utils.group;
  * @author Mark sunlightcs@gmail.com
  */
 public interface QiniuGroup {
+
+
 }
