@@ -13,6 +13,8 @@
         <module>gameWeb-pms</module>
         <module>gameWeb-ums</module>
         <module>gameWeb-common</module>
+        <module>gameWeb-thirdParty</module>
+        <module>gameWeb-gateway</module>
     </modules>
     <dependencies>
         <dependency>
