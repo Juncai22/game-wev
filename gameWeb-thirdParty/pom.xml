@@ -3,46 +3,57 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
-    <artifactId>gameWeb-pms</artifactId>
+    <artifactId>gameWeb-thirdParty</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gameWeb-pms</name>
-    <description>gameWeb-pms</description>
+    <name>gameWeb-thirdParty</name>
+    <description>gameWeb-thirdParty</description>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.1.18.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
+        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.gameone</groupId>
             <artifactId>gameWeb-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -55,6 +66,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                    <version>2.1.0.RELEASE</version>
+                    <type>pom</type>
+                    <scope>import</scope>
+                </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -73,9 +91,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.18.RELEASE</version>
+                <version>2.3.7.RELEASE</version>
                 <configuration>
-                    <mainClass>com.example.gamewebpms.GameWebPmsApplication</mainClass>
+                    <mainClass>com.example.gamewebthirdparty.GameWebThirdPartyApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

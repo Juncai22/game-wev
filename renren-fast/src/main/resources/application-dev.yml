@@ -36,8 +36,8 @@ spring:
         nacos:
             discovery:
                 server-addr: localhost:8848
-        application:
-            name: renren-fast
+    application:
+        name: renren-fast
 
 
 ##多数据源的配置

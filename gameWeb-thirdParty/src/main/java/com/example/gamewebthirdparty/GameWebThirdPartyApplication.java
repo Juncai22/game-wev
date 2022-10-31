@@ -1,4 +1,4 @@
-package com.example.gamewebgateway;
+package com.example.gamewebthirdparty;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class GameWebGatewayApplication {
+public class GameWebThirdPartyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GameWebGatewayApplication.class, args);
+        SpringApplication.run(GameWebThirdPartyApplication.class, args);
     }
 
 }
