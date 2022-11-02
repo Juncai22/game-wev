@@ -22,7 +22,7 @@ spring:
           predicates:
             - Path=/api/thirdParty/**
           filters:
-            - RewritePath=/api/thiryParty/(?<segment>.*),/$\{segment}
+            - RewritePath=/api/thirdParty/(?<segment>.*),/$\{segment}
 
 
         - id: admin_route

@@ -12,6 +12,8 @@ spring:
 
   application:
     name: game-pms
-
 server:
   port: 11000
+logging:
+  level:
+    com.example.gamewebpms: debug

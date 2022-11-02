@@ -8,19 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.common.utils.PageUtils;
 import com.example.common.utils.Query;
 
-import com.example.gamewebpms.dao.PmsSpuInfoDao;
-import com.example.gamewebpms.entity.PmsSpuInfoEntity;
-import com.example.gamewebpms.service.PmsSpuInfoService;
+import com.example.gamewebpms.dao.PmsSeriesDao;
+import com.example.gamewebpms.entity.PmsSeriesEntity;
+import com.example.gamewebpms.service.PmsSeriesService;
 
 
-@Service("pmsSpuInfoService")
-public class PmsSpuInfoServiceImpl extends ServiceImpl<PmsSpuInfoDao, PmsSpuInfoEntity> implements PmsSpuInfoService {
+@Service("pmsSeriesService")
+public class PmsSeriesServiceImpl extends ServiceImpl<PmsSeriesDao, PmsSeriesEntity> implements PmsSeriesService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<PmsSpuInfoEntity> page = this.page(
-                new Query<PmsSpuInfoEntity>().getPage(params),
-                new QueryWrapper<PmsSpuInfoEntity>()
+        IPage<PmsSeriesEntity> page = this.page(
+                new Query<PmsSeriesEntity>().getPage(params),
+                new QueryWrapper<PmsSeriesEntity>()
         );
 
         return new PageUtils(page);

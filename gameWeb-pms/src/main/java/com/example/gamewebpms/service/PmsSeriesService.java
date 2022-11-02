@@ -2,18 +2,18 @@ package com.example.gamewebpms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.common.utils.PageUtils;
-import com.example.gamewebpms.entity.PmsSpuInfoDescEntity;
+import com.example.gamewebpms.entity.PmsSeriesEntity;
 
 import java.util.Map;
 
 /**
- * spu信息介绍
+ * 
  *
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-10-29 17:58:12
+ * @date 2022-11-02 20:47:40
  */
-public interface PmsSpuInfoDescService extends IService<PmsSpuInfoDescEntity> {
+public interface PmsSeriesService extends IService<PmsSeriesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 }

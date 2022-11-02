@@ -8,37 +8,29 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * sku图片
+ * 
  * 
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-10-29 17:58:12
+ * @date 2022-11-02 20:21:06
  */
 @Data
-@TableName("pms_sku_images")
-public class PmsSkuImagesEntity implements Serializable {
+@TableName("pms_attr_impl")
+public class PmsAttrImplEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * id
+	 * attr实现类ID
 	 */
 	@TableId
-	private Long id;
+	private Integer id;
 	/**
-	 * sku_id
+	 * attrID
 	 */
-	private Long skuId;
+	private Integer attrId;
 	/**
-	 * 图片地址
+	 * attr具体事物的ID
 	 */
-	private String imgUrl;
-	/**
-	 * 排序
-	 */
-	private Integer imgSort;
-	/**
-	 * 默认图[0 - 不是默认图，1 - 是默认图]
-	 */
-	private Integer defaultImg;
+	private String attrImplId;
 
 }

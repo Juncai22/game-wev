@@ -1,17 +1,17 @@
 package com.example.gamewebpms.dao;
 
-import com.example.gamewebpms.entity.PmsSpuInfoDescEntity;
+import com.example.gamewebpms.entity.PmsSeriesEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * spu信息介绍
+ * 
  * 
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-10-29 17:58:12
+ * @date 2022-11-02 20:47:40
  */
 @Mapper
-public interface PmsSpuInfoDescDao extends BaseMapper<PmsSpuInfoDescEntity> {
+public interface PmsSeriesDao extends BaseMapper<PmsSeriesEntity> {
 	
 }

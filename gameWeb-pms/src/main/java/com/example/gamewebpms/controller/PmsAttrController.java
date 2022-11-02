@@ -3,8 +3,6 @@ package com.example.gamewebpms.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.example.common.utils.PageUtils;
-import com.example.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,14 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.gamewebpms.entity.PmsAttrEntity;
 import com.example.gamewebpms.service.PmsAttrService;
+import com.example.common.utils.PageUtils;
+import com.example.common.utils.R;
+
 
 
 /**
- * 商品属性
+ * 
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2022-10-29 17:20:13
+ * @author Juncai22
+ * @email 1547598719@qq.com
+ * @date 2022-11-02 20:21:06
  */
 @RestController
 @RequestMapping("gamewebpms/pmsattr")
@@ -43,9 +44,9 @@ public class PmsAttrController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrId}")
-    public R info(@PathVariable("attrId") Long attrId){
-		PmsAttrEntity pmsAttr = pmsAttrService.getById(attrId);
+    @RequestMapping("/info/{id}")
+    public R info(@PathVariable("id") Integer id){
+		PmsAttrEntity pmsAttr = pmsAttrService.getById(id);
 
         return R.ok().put("pmsAttr", pmsAttr);
     }
@@ -74,8 +75,8 @@ public class PmsAttrController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrIds){
-		pmsAttrService.removeByIds(Arrays.asList(attrIds));
+    public R delete(@RequestBody Integer[] ids){
+		pmsAttrService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

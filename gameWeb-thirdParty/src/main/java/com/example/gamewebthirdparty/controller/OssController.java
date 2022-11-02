@@ -7,6 +7,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.example.common.utils.R;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,13 +35,10 @@ public class OssController {
     private String accessId;
 
     @RequestMapping("/oss/policy")
-    public Map<String, String> policy() throws UnsupportedEncodingException {
-        // 填写Host地址，格式为https://bucketname.endpoint。
-//        https://game-web-yy.oss-cn-guangzhou.aliyuncs.com/asd.jpg
-        String host = "https://" + bucket + "." + endPoint + ".aliyuncs.com";
-        // 设置上传回调URL，即回调服务器地址，用于处理应用服务器与OSS之间的通信。OSS会在文件上传完成后，把文件上传信息通过此回调URL发送给应用服务器。
-//        String callbackUrl = "https://192.168.0.0:8888";
-        // 设置上传到OSS文件的前缀，可置空此项。置空后，文件将上传至Bucket的根目录下。
+    public R policy() throws UnsupportedEncodingException {
+
+        String host = "https://" + bucket + "." + endPoint;
+
         String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String dir = format + "/";
         Map<String, String> respMap = null;
@@ -70,9 +68,12 @@ public class OssController {
 
             // Assert.fail(e.getMessage());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            // Assert.fail(e.getMessage());
+            System.out.println(e.getMessage());
+        } finally {
+            ossClient.shutdown();
         }
-        return respMap;
+        return R.ok().put("data",respMap);
     }
 }

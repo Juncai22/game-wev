@@ -13,3 +13,5 @@ public class GameWebThirdPartyApplication {
     }
 
 }
+//"https://game-web-yy.oss-cn-guangzhou.aliyuncs.com"
+//"https://game-web-yy.oss-cn-guangzhou.aliyuncs.com"
