@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.gamewebpms.dao.PmsProductDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.gamewebpms.entity.PmsProductEntity" id="pmsProductMap">
+        <result property="prId" column="pr_id"/>
+        <result property="name" column="name"/>
+        <result property="descript" column="descript"/>
+        <result property="image" column="image"/>
+        <result property="sort" column="sort"/>
+        <result property="firstLetter" column="first_letter"/>
+        <result property="quickShow" column="quick_show"/>
+    </resultMap>
+
+
+</mapper>

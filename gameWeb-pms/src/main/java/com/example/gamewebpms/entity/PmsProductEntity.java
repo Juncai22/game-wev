@@ -13,25 +13,41 @@ import lombok.Data;
  * 
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-11-02 20:21:06
+ * @date 2022-11-04 14:35:16
  */
 @Data
-@TableName("pms_attr_impl")
-public class PmsAttrImplEntity implements Serializable {
+@TableName("pms_product")
+public class PmsProductEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * attr实现类ID
+	 * 商品Id
 	 */
 	@TableId(type = IdType.AUTO)
-	private Integer id;
+	private Long prId;
 	/**
-	 * attrID
+	 * 商品名字
 	 */
-	private Integer attrId;
+	private String name;
 	/**
-	 * attr具体事物的ID
+	 * 商品介绍
 	 */
-	private String attrImplId;
+	private String descript;
+	/**
+	 * 商品主图
+	 */
+	private String image;
+	/**
+	 * 顺序
+	 */
+	private Integer sort;
+	/**
+	 * 监测首字母
+	 */
+	private String firstLetter;
+	/**
+	 * 快速展示
+	 */
+	private Integer quickShow;
 
 }

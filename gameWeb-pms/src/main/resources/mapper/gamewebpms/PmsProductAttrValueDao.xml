@@ -6,10 +6,9 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.example.gamewebpms.entity.PmsProductAttrValueEntity" id="pmsProductAttrValueMap">
         <result property="id" column="id"/>
-        <result property="spuId" column="spu_id"/>
+        <result property="prId" column="pr_id"/>
         <result property="attrId" column="attr_id"/>
-        <result property="attrName" column="attr_name"/>
-        <result property="attrValue" column="attr_value"/>
+        <result property="attrimplId" column="attrImpl_id"/>
         <result property="attrSort" column="attr_sort"/>
         <result property="quickShow" column="quick_show"/>
     </resultMap>

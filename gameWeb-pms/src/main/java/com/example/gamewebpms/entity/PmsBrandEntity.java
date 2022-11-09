@@ -1,5 +1,6 @@
 package com.example.gamewebpms.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -29,7 +30,7 @@ import javax.validation.constraints.*;
 public class PmsBrandEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@TableId
+	@TableId(type = IdType.AUTO,value = "brand_id")
 	@Null(message = "新增不能添加ID",groups = {Addgro.class})
 	@NotNull(message = "修改必须添加Id",groups = {UpdataGro.class , UpdataStatuGro.class})
 	private Long brandId;

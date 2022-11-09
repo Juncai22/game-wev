@@ -1,5 +1,6 @@
 package com.example.gamewebpms.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -12,7 +13,7 @@ import lombok.Data;
  * 
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-10-29 17:58:12
+ * @date 2022-11-04 13:54:40
  */
 @Data
 @TableName("pms_product_attr_value")
@@ -22,24 +23,20 @@ public class PmsProductAttrValueEntity implements Serializable {
 	/**
 	 * id
 	 */
-	@TableId
+	@TableId(type = IdType.AUTO)
 	private Long id;
 	/**
 	 * 商品id
 	 */
-	private Long spuId;
+	private Long prId;
 	/**
-	 * 属性id
+	 * 哪一个属性
 	 */
 	private Long attrId;
 	/**
-	 * 属性名
+	 * 属性具体值
 	 */
-	private String attrName;
-	/**
-	 * 属性值
-	 */
-	private String attrValue;
+	private Long attrimplId;
 	/**
 	 * 顺序
 	 */

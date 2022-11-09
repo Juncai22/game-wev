@@ -1,5 +1,6 @@
 package com.example.gamewebpms.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -22,7 +23,7 @@ public class PmsSeriesEntity implements Serializable {
 	/**
 	 * 系列的ID
 	 */
-	@TableId
+	@TableId(type = IdType.AUTO)
 	private Long seId;
 	/**
 	 * 系列名字

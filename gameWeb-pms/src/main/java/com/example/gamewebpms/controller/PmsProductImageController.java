@@ -10,32 +10,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.gamewebpms.entity.PmsProductAttrValueEntity;
-import com.example.gamewebpms.service.PmsProductAttrValueService;
+import com.example.gamewebpms.entity.PmsProductImageEntity;
+import com.example.gamewebpms.service.PmsProductImageService;
 import com.example.common.utils.PageUtils;
 import com.example.common.utils.R;
 
 
 
 /**
- * spu属性值
+ * 
  *
  * @author Juncai22
  * @email 1547598719@qq.com
- * @date 2022-11-04 13:54:40
+ * @date 2022-11-04 14:35:16
  */
 @RestController
-@RequestMapping("gamewebpms/pmsproductattrvalue")
-public class PmsProductAttrValueController {
+@RequestMapping("gamewebpms/pmsproductimage")
+public class PmsProductImageController {
     @Autowired
-    private PmsProductAttrValueService pmsProductAttrValueService;
+    private PmsProductImageService pmsProductImageService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = pmsProductAttrValueService.queryPage(params);
+        PageUtils page = pmsProductImageService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -44,19 +44,19 @@ public class PmsProductAttrValueController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
-		PmsProductAttrValueEntity pmsProductAttrValue = pmsProductAttrValueService.getById(id);
+    @RequestMapping("/info/{primaId}")
+    public R info(@PathVariable("primaId") Long primaId){
+		PmsProductImageEntity pmsProductImage = pmsProductImageService.getById(primaId);
 
-        return R.ok().put("pmsProductAttrValue", pmsProductAttrValue);
+        return R.ok().put("pmsProductImage", pmsProductImage);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody PmsProductAttrValueEntity pmsProductAttrValue){
-		pmsProductAttrValueService.save(pmsProductAttrValue);
+    public R save(@RequestBody PmsProductImageEntity pmsProductImage){
+		pmsProductImageService.save(pmsProductImage);
 
         return R.ok();
     }
@@ -65,8 +65,8 @@ public class PmsProductAttrValueController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody PmsProductAttrValueEntity pmsProductAttrValue){
-		pmsProductAttrValueService.updateById(pmsProductAttrValue);
+    public R update(@RequestBody PmsProductImageEntity pmsProductImage){
+		pmsProductImageService.updateById(pmsProductImage);
 
         return R.ok();
     }
@@ -75,8 +75,8 @@ public class PmsProductAttrValueController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-		pmsProductAttrValueService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Long[] primaIds){
+		pmsProductImageService.removeByIds(Arrays.asList(primaIds));
 
         return R.ok();
     }

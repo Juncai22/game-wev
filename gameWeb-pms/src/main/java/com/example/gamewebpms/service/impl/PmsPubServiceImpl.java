@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 @Service("pmsPubService")
 public class PmsPubServiceImpl extends ServiceImpl<PmsPubDao, PmsPubEntity> implements PmsPubService {
 
-//    public static Long pain = 1;
+//    public static Long pain = 0;
 
 
     @Override
@@ -32,6 +32,4 @@ public class PmsPubServiceImpl extends ServiceImpl<PmsPubDao, PmsPubEntity> impl
 
         return new PageUtils(page);
     }
-
-
 }

@@ -1,6 +1,8 @@
 package com.example.gamewebpms.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.example.common.utils.PageUtils;
@@ -43,6 +45,8 @@ public class PmsBrandController {
 
         return R.ok().put("page", page);
     }
+
+
 
     @RequestMapping("/update/status")
     public R updateStatu(@Validated({UpdataStatuGro.class}) @RequestBody PmsBrandEntity brand){
