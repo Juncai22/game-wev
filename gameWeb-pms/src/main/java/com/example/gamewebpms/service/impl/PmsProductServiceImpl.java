@@ -74,7 +74,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         //进行保存图片的信息
         for (String image : pmsProductEveryVo.getPrImage()) {
             PmsProductImageEntity pmsProductImageEntity = new PmsProductImageEntity();
-            pmsProductImageEntity.setPrimaId(primageId++);
+            pmsProductImageEntity.setPrimaId(primageId);
             pmsProductImageEntity.setSort(pmsProductEveryVo.getSort());
             pmsProductImageEntity.setQuickShow(pmsProductEveryVo.getQuickShow());
             pmsProductImageEntity.setPrId(prId);
