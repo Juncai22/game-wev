@@ -11,6 +11,11 @@
         <result property="sort" column="sort"/>
         <result property="quickShow" column="quick_show"/>
     </resultMap>
+    <insert id="save">
+        insert into pms_product_image VALUES
+            (#{pmsProductImageEntity.primaId},#{pmsProductImageEntity.prId},#{pmsProductImageEntity.prImage}
+            ,#{pmsProductImageEntity.sort},#{pmsProductImageEntity.quickShow})
+    </insert>
 
 
 </mapper>

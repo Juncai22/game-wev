@@ -10,4 +10,5 @@ public class AttrVo {
     List<String> brands;
     List<String> pubs;
     List<String> series;
+    List<String> categorys;
 }

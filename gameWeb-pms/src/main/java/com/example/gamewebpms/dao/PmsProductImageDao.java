@@ -3,6 +3,7 @@ package com.example.gamewebpms.dao;
 import com.example.gamewebpms.entity.PmsProductImageEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -13,5 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PmsProductImageDao extends BaseMapper<PmsProductImageEntity> {
-	
+
+    void save(@Param("pmsProductImageEntity") PmsProductImageEntity pmsProductImageEntity);
 }

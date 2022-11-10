@@ -34,6 +34,10 @@ public class PmsProductEveryVo {
      */
     private List<String> prImage;
     /**
+     * 商品的类型
+     */
+    private List<String> categorys;
+    /**
      * 商品的开发商属性
      */
     private String brand;

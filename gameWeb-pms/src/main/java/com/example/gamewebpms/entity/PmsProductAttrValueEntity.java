@@ -36,7 +36,7 @@ public class PmsProductAttrValueEntity implements Serializable {
 	/**
 	 * 属性具体值
 	 */
-	private Long attrimplId;
+	private String attrimplId;
 	/**
 	 * 顺序
 	 */
