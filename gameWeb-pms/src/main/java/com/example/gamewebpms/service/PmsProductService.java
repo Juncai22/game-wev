@@ -29,5 +29,7 @@ public interface PmsProductService extends IService<PmsProductEntity> {
     void updateEverById(PmsProductEveryVo pmsProductEveryVo);
 
     void removeEverByIds(List<Long> asList);
+
+    void up(PmsProductEntity product);
 }
 

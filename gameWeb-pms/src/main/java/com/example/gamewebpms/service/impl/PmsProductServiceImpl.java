@@ -1,17 +1,19 @@
 package com.example.gamewebpms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.example.common.utils.R;
+import com.example.common.vo.PrModel;
+import com.example.gamewebpms.controller.PmsProductAttrValueController;
 import com.example.gamewebpms.dao.PmsProductImageDao;
 import com.example.gamewebpms.entity.*;
+import com.example.gamewebpms.feign.ElSearchFeign;
 import com.example.gamewebpms.service.*;
 import com.example.gamewebpms.vo.AttrVo;
 import com.example.gamewebpms.vo.PmsProductEveryVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -33,6 +35,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
     @Resource
     PmsProductImageService pmsProductImageService;
 
+    @Resource
+    ElSearchFeign elSearchFeign;
     @Resource
     PmsProductAttrValueService pmsProductAttrValueService;
 
@@ -69,10 +73,10 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
             key = params.get("key");
         }
         Object category = null;
-        if (params.get("category") != null && !params.get("category").equals("")) {
+        if (params.get("category") != null && !params.get("category").equals("") && !params.get("category").equals("全部类型")) {
             category = params.get("category");
         }
-        if (key != null && params.get("category") == null) {
+        if (key != null && category == null) {
             list = this.list(new QueryWrapper<PmsProductEntity>().like("name", "%" + key + "%"));
         } else if (category != null) {
             Long catId = pmsCategoryService.getOne(new QueryWrapper<PmsCategoryEntity>().eq("name", category)).getCatId();
@@ -336,6 +340,65 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         }
         for (Long aLong : asList) {
             pmsProductAttrValueService.remove(new QueryWrapper<PmsProductAttrValueEntity>().eq("pr_id", aLong));
+        }
+    }
+
+
+    /**
+     * TODO 以后要进行的价格修改地点PrPrice
+     *      以后要修改的SaleCount
+     *      以后要修改是否有库存
+     *
+     * @param product
+     */
+    @Override
+    public void up(PmsProductEntity product) {
+        PrModel model = new PrModel();
+
+        Long prId = product.getPrId();
+        product = this.getById(prId);
+        model.setPrId(prId);
+        model.setPrName(product.getName());
+        model.setPrPrice(BigDecimal.valueOf(0L));
+        model.setPrImage(product.getImage());
+        model.setSaleCount(0L);
+        model.setHasStock(true);
+
+        List<PmsProductAttrValueEntity> prae = pmsProductAttrValueService.list(new QueryWrapper<PmsProductAttrValueEntity>().eq("pr_id", prId));
+        List<Long> collect = prae.stream().map(PmsProductAttrValueEntity::getAttrId).collect(Collectors.toList());
+        List<String> collect1 = prae.stream().map(PmsProductAttrValueEntity::getAttrimplId).collect(Collectors.toList());
+        //将各个属性赋值
+        for (int i = 0; i < collect.size(); i++) {
+            //如果是分类，因为是List集合，所以将会进行结合
+            if (collect.get(i) == 1) {
+                String sub = collect1.get(i);
+                List<Long> categoryIds = Arrays.stream(sub.split(";")).map(Long::valueOf).collect(Collectors.toList());
+                model.setCatelogIds(categoryIds);
+                List<String> categoryNames = pmsCategoryService.listByIds(categoryIds).stream().map(PmsCategoryEntity::getName).collect(Collectors.toList());
+                model.setCategpryNames(categoryNames);
+                //如果是开发商，则直接可以把需要的和那些不需要的直接保存
+            } else if (collect.get(i) == 2) {
+                Long sub = Long.valueOf(collect1.get(i));
+                model.setBrandId(sub);
+                model.setBrandName(pmsBrandService.getById(sub).getName());
+                //如果是发行商，则直接可以把需要的和那些不需要的直接保存
+            } else if (collect.get(i) == 3) {
+                Long sub = Long.valueOf(collect1.get(i));
+                model.setPubId(sub);
+                model.setPubName(pmsPubService.getById(sub).getName());
+                //如果是系列，则直接可以把需要的和那些不需要的直接保存
+            } else {
+                Long sub = Long.valueOf(collect1.get(i));
+                model.setSerieId(sub);
+                model.setSerieName(pmsSeriesService.getById(sub).getName());
+            }
+        }
+        //赋值完进行远程调用，Feign
+        R r = elSearchFeign.savePrModel(model);
+
+        if (r.getCode() == 0){
+            //上架成功,改变状态
+            this.updateById(product);
         }
     }
 

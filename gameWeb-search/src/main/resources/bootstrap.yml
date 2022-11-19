@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+  application:
+    name: game-search
+server:
+  port: 13000
+logging:
+  level:
+    com.example.gamewebpms: debug

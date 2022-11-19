@@ -49,8 +49,7 @@ public class PmsProductController {
 
     @RequestMapping("/update/status")
     public R updateStatu(@Validated({UpdataStatuGro.class}) @RequestBody PmsProductEntity product){
-        System.out.println(product.toString());
-        pmsProductService.updateById(product);
+        pmsProductService.up(product);
 
         return R.ok();
     }
