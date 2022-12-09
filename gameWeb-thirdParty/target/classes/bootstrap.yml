@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    alicloud:
+      access-key: LTAI5tAjJcaMhtfBrFTsqNUE
+      secret-key: CNSUHWPKVpxak0Fv2NDYOLr7E0SdEB
+      oss:
+        endpoint: oss-cn-guangzhou.aliyuncs.com
+  application:
+    name: game-thiryParty
+oss:
+  bucket: game-web-yy
+server:
+  port: 30000

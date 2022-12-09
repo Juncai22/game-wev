@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.gamewebpms.dao.PmsProductImageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.example.gamewebpms.entity.PmsProductImageEntity" id="pmsProductImageMap">
+        <result property="primaId" column="prima_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="prImage" column="pr_image"/>
+        <result property="sort" column="sort"/>
+        <result property="quickShow" column="quick_show"/>
+    </resultMap>
+    <insert id="save">
+        insert into pms_product_image VALUES
+            (#{pmsProductImageEntity.primaId},#{pmsProductImageEntity.prId},#{pmsProductImageEntity.prImage}
+            ,#{pmsProductImageEntity.sort},#{pmsProductImageEntity.quickShow})
+    </insert>
+
+
+</mapper>
