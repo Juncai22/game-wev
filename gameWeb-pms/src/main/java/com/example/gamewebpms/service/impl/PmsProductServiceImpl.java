@@ -218,15 +218,21 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
             }
             if (attrId == 2) {
                 PmsBrandEntity brand = pmsBrandService.getById(pmsProductAttrValueEntity.getAttrimplId());
-                pmsProductEveryVo.setBrand(brand.getName());
+                List<String> brands = new ArrayList<>();
+                brands.add(brand.getName());
+                pmsProductEveryVo.setBrands(brands);
             }
             if (attrId == 3) {
                 PmsPubEntity pub = pmsPubService.getById(pmsProductAttrValueEntity.getAttrimplId());
-                pmsProductEveryVo.setPub(pub.getName());
+                List<String> pubs = new ArrayList<>();
+                pubs.add(pub.getName());
+                pmsProductEveryVo.setPubs(pubs);
             }
             if (attrId == 4) {
                 PmsSeriesEntity serie = pmsSeriesService.getById(pmsProductAttrValueEntity.getAttrimplId());
-                pmsProductEveryVo.setSerie(serie.getName());
+                List<String> series = new ArrayList<>();
+                series.add(serie.getName());
+                pmsProductEveryVo.setSeries(series);
             }
         }
 
@@ -313,10 +319,11 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         pmsProductAttrValueEntity1.setPrId(prId);
         pmsProductAttrValueEntity1.setAttrId(3L);
         pmsProductAttrValueEntity1.setAttrimplId(
-                String.valueOf(pmsPubService.getOne(new QueryWrapper<PmsPubEntity>().eq("name", pmsProductEveryVo.getPub())).getPubId()));
+                String.valueOf(pmsPubService.getOne(new QueryWrapper<PmsPubEntity>()
+                        .eq("name", pmsProductEveryVo.getPub())).getPubId()));
 
-        pmsProductAttrValueEntity.setId(pmsProductAttrValueService.getOne(new QueryWrapper<PmsProductAttrValueEntity>()
-                .eq("pr_id", prId).eq("attr_id", 3)).getAttrId());
+        pmsProductAttrValueEntity1.setId(pmsProductAttrValueService.getOne(new QueryWrapper<PmsProductAttrValueEntity>()
+                .eq("pr_id", prId).eq("attr_id", 3)).getId());
         pmsProductAttrValueService.updateById(pmsProductAttrValueEntity1);
         //设置系列
         PmsProductAttrValueEntity pmsProductAttrValueEntity2 = new PmsProductAttrValueEntity();
@@ -325,8 +332,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         pmsProductAttrValueEntity2.setAttrimplId(
                 String.valueOf(pmsSeriesService.getOne(new QueryWrapper<PmsSeriesEntity>().eq("name", pmsProductEveryVo.getSerie())).getSeId()));
 
-        pmsProductAttrValueEntity.setId(pmsProductAttrValueService.getOne(new QueryWrapper<PmsProductAttrValueEntity>()
-                .eq("pr_id", prId).eq("attr_id", 4)).getAttrId());
+        pmsProductAttrValueEntity2.setId(pmsProductAttrValueService.getOne(new QueryWrapper<PmsProductAttrValueEntity>()
+                .eq("pr_id", prId).eq("attr_id", 4)).getId());
         pmsProductAttrValueService.updateById(pmsProductAttrValueEntity2);
     }
 

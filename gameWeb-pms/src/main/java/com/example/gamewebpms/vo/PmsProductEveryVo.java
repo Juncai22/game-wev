@@ -50,6 +50,18 @@ public class PmsProductEveryVo {
      */
     private String serie;
     /**
+     * 商品的开发商属性
+     */
+    private List<String> brands;
+    /**
+     * 商品的开发商属性
+     */
+    private List<String> pubs;
+    /**
+     * 商品的开发商属性
+     */
+    private List<String> series;
+    /**
      * 顺序
      */
     private Integer sort;

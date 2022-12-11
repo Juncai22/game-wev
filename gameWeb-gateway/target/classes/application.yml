@@ -9,20 +9,20 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
-
-        - id: admin_route
-          uri: lb://game-ums
-          predicates:
-            - Path=/api/gamewebums/**
-          filters:
-            - RewritePath=/api/(?<segment>.*),/$\{segment}
-
         - id: thirdParty_route
           uri: lb://game-thiryParty
           predicates:
             - Path=/api/thirdParty/**
           filters:
             - RewritePath=/api/thirdParty/(?<segment>.*),/$\{segment}
+
+
+        - id: ums_route
+          uri: lb://game-ums
+          predicates:
+            - Path=/api/gamewebums/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
 
 
         - id: admin_route
