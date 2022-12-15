@@ -3,6 +3,7 @@ package com.example.gamewebums.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.example.gamewebums.VO.MemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,14 @@ public class UmsMemberController {
         PageUtils page = umsMemberService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+
+    @RequestMapping("/reg")
+    public R reg(@RequestParam MemberVo memberVo){
+        umsMemberService.reg(memberVo);
+
+        return R.ok();
     }
 
 

@@ -2,6 +2,7 @@ package com.example.gamewebums.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.common.utils.PageUtils;
+import com.example.gamewebums.VO.MemberVo;
 import com.example.gamewebums.entity.UmsMemberEntity;
 
 import java.util.Map;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface UmsMemberService extends IService<UmsMemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void reg(MemberVo memberVo);
 }
 

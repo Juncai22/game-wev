@@ -37,7 +37,7 @@ public class PmsCategoryController {
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = pmsCategoryService.queryPage(params);
+        PageUtils page = pmsCategoryService.toQueryPage(params);
 
         return R.ok().put("page", page);
     }

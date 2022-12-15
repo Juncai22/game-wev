@@ -12,6 +12,9 @@ spring:
 
   application:
     name: game-pms
+  redis:
+    password: '000415'
+    host: 192.168.110.132
 server:
   port: 11000
 logging:

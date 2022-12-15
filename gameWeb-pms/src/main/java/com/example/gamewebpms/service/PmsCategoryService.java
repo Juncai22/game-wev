@@ -16,5 +16,7 @@ import java.util.Map;
 public interface PmsCategoryService extends IService<PmsCategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils toQueryPage(Map<String, Object> params);
 }
 
