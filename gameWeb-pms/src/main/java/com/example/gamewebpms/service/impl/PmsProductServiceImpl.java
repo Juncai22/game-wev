@@ -1,10 +1,11 @@
 package com.example.gamewebpms.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.utils.R;
 import com.example.common.vo.PrModel;
-import com.example.gamewebpms.controller.PmsProductAttrValueController;
 import com.example.gamewebpms.dao.PmsProductImageDao;
 import com.example.gamewebpms.entity.*;
 import com.example.gamewebpms.feign.ElSearchFeign;
@@ -13,6 +14,8 @@ import com.example.gamewebpms.vo.AttrVo;
 import com.example.gamewebpms.vo.Impl.ProductImpl;
 import com.example.gamewebpms.vo.PmsProductEveryVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,6 +30,7 @@ import com.example.common.utils.Query;
 
 import com.example.gamewebpms.dao.PmsProductDao;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -34,6 +38,9 @@ import javax.annotation.Resource;
 @Service("pmsProductService")
 public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProductEntity> implements PmsProductService {
 
+
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     @Resource
     PmsProductImageService pmsProductImageService;
@@ -255,7 +262,13 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
 
     @Override
     @Transactional
+    @Cacheable(value = {"attrvo"}, key = "'attrvoList'")
     public AttrVo getAttrVo() {
+        String attrvoList = stringRedisTemplate.opsForValue().get("attrvoList");
+        if (!StringUtils.isEmpty(attrvoList)) {
+            return JSON.parseObject(attrvoList, new TypeReference<AttrVo>() {
+            });
+        }
         AttrVo attrVo = new AttrVo();
         attrVo.setBrands(pmsBrandService.list().stream().map(PmsBrandEntity::getName).collect(Collectors.toList()));
         attrVo.setPubs(pmsPubService.list().stream().map(PmsPubEntity::getName).collect(Collectors.toList()));
@@ -505,6 +518,22 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         pageImpl.setRecords(listR);
         //进行最终返回
         return new PageUtils(pageImpl);
+    }
+
+    @Override
+    public ProductImpl infoImpl(Long prId) {
+        //根据以前的方法进行搜寻得到答案
+        PmsProductEveryVo everyById = this.getEveryById(prId);
+        ProductImpl product = new ProductImpl();
+        //进行赋值
+        BeanUtils.copyProperties(everyById,product);
+        String[] split = everyById.getDescript().split("-");
+        //将字段进行分割，各自拥有各自的字段
+        product.setVersion(split[0]);
+        product.setGameDesc(split[1]);
+        product.setDisposition(split[2]);
+        //返回
+        return product;
     }
 
 }

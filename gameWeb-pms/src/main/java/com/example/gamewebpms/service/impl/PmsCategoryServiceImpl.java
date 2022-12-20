@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,6 +49,12 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
     @Cacheable(value = {"category"}, key = "'categoryList'")
     public List<PmsCategoryEntity> toList() {
         return this.list();
+    }
+
+    @Override
+    @Cacheable(value = {"category"}, key = "'categoryNameList'")
+    public List<String> listFn() {
+        return this.list().stream().map(PmsCategoryEntity::getName).collect(Collectors.toList());
     }
 
     @Override

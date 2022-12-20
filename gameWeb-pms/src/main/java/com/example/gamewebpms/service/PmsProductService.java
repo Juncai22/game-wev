@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.common.utils.PageUtils;
 import com.example.gamewebpms.entity.PmsProductEntity;
 import com.example.gamewebpms.vo.AttrVo;
+import com.example.gamewebpms.vo.Impl.ProductImpl;
 import com.example.gamewebpms.vo.PmsProductEveryVo;
 
 import java.util.List;
@@ -33,5 +34,7 @@ public interface PmsProductService extends IService<PmsProductEntity> {
     void up(PmsProductEntity product);
 
     PageUtils queryPageImpl(Map<String, Object> params);
+
+    ProductImpl infoImpl(Long prId);
 }
 

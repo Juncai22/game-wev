@@ -21,5 +21,7 @@ public interface PmsCategoryService extends IService<PmsCategoryEntity> {
     PageUtils toQueryPage(Map<String, Object> params);
 
     List<PmsCategoryEntity> toList();
+
+    List<String> listFn();
 }
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import com.example.common.valid.UpdataStatuGro;
 import com.example.gamewebpms.entity.PmsBrandEntity;
 import com.example.gamewebpms.vo.AttrVo;
+import com.example.gamewebpms.vo.Impl.ProductImpl;
 import com.example.gamewebpms.vo.PmsProductEveryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -70,6 +71,13 @@ public class PmsProductController {
 		PmsProductEveryVo pmsProductEveryVo = pmsProductService.getEveryById(prId);
 
         return R.ok().put("pmsProduct", pmsProductEveryVo);
+    }
+
+    @RequestMapping("/infoImpl/{prId}")
+    public R infoImpl(@PathVariable("prId") Long prId){
+        ProductImpl product = pmsProductService.infoImpl(prId);
+
+        return R.ok().put("product", product);
     }
 
     @RequestMapping("/listToOne")

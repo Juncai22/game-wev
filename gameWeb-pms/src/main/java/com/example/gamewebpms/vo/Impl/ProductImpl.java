@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,9 +37,25 @@ public class ProductImpl {
      */
     private List<String> categorys;
     /**
+     * 商品的开发商属性
+     */
+    private List<String> brands;
+    /**
+     * 商品的开发商属性
+     */
+    private List<String> pubs;
+    /**
+     * 商品的开发商属性
+     */
+    private List<String> series;
+    /**
      * 商品主图
      */
     private String image;
+    /**
+     * 各种图片
+     */
+    private List<String> prImage;
     /**
      * 顺序
      */

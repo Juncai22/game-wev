@@ -1,6 +1,7 @@
 package com.example.gamewebpms.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.example.common.utils.PageUtils;
@@ -40,6 +41,13 @@ public class PmsCategoryController {
         PageUtils page = pmsCategoryService.toQueryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    @RequestMapping("/listfn")
+    public R listfn(){
+        List<String> categorys = pmsCategoryService.listFn();
+
+        return R.ok().put("categorys", categorys);
     }
 
     /**
