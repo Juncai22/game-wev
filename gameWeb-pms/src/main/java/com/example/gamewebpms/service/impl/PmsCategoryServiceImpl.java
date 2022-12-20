@@ -1,11 +1,7 @@
 package com.example.gamewebpms.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.example.gamewebpms.entity.PmsProductEntity;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -33,8 +29,12 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    PmsCategoryService categoryService;
+
 
     @Override
+    @Cacheable({"category"})
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<PmsCategoryEntity> page = this.page(
                 new Query<PmsCategoryEntity>().getPage(params),
@@ -42,6 +42,12 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    @Cacheable(value = {"category"}, key = "'categoryList'")
+    public List<PmsCategoryEntity> toList() {
+        return this.list();
     }
 
     @Override
@@ -53,24 +59,22 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
                 new QueryWrapper<>()
         );
         //查看redis里面是否拥有
-        String categoryList = ops.get("categoryList");
+        String categoryPage = ops.get("categoryList");
 
         //如果没有则加入
-        if (StringUtils.isEmpty(categoryList)) {
+        if (StringUtils.isEmpty(categoryPage)) {
             //先得到总体的基础
-            List<PmsCategoryEntity> list = this.list();
-            page.setRecords(list);
-            //将集合转化为json字符串，并保存如redis
-            String categorys = JSON.toJSONString(list);
-            ops.set("categoryList", categorys);
+            List<PmsCategoryEntity> pmsCategoryEntities = categoryService.toList();
+            page.setRecords(pmsCategoryEntities);
             //返回PageUtils
             return new PageUtils(page);
         }
         //如果有，得到集合团
-        List<PmsCategoryEntity> categorys = JSON.parseArray(categoryList, PmsCategoryEntity.class);
-        page.setRecords(categorys);
-
+        List<PmsCategoryEntity> pmsCategoryEntityIPage = JSON.parseArray(categoryPage, PmsCategoryEntity.class);
+        page.setRecords(pmsCategoryEntityIPage);
         //返回答案
         return new PageUtils(page);
     }
+
+
 }

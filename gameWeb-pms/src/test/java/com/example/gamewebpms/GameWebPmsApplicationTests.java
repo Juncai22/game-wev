@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -21,16 +22,10 @@ import javax.annotation.Resource;
 public class GameWebPmsApplicationTests {
 
     @Resource
-    StringRedisTemplate redisTemplate;
+    PmsCategoryService categoryService;
 
     @Test
     public void test() {
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        String categoryList = ops.get("categoryList");
-
-        JSONObject jsonObject = new JSONObject();
-        IPage<PmsCategoryEntity> pmsCategoryEntityIPage  = jsonObject.getObject(categoryList, IPage.class);
-
-        System.out.println(pmsCategoryEntityIPage);
+//        categoryService.to
     }
 }

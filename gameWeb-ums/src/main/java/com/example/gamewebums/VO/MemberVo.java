@@ -7,6 +7,6 @@ public class MemberVo {
 
     private String nickName;
     private String email;
-    private String passWrod;
+    private String passWord;
 
 }

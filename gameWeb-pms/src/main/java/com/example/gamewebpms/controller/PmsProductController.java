@@ -47,6 +47,13 @@ public class PmsProductController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/listImpl")
+    public R listImpl(@RequestParam Map<String, Object> params){
+        PageUtils page = pmsProductService.queryPageImpl(params);
+
+        return R.ok().put("page", page);
+    }
+
     @RequestMapping("/update/status")
     public R updateStatu(@Validated({UpdataStatuGro.class}) @RequestBody PmsProductEntity product){
         pmsProductService.up(product);

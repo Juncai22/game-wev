@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.common.utils.PageUtils;
 import com.example.gamewebpms.entity.PmsCategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,7 @@ public interface PmsCategoryService extends IService<PmsCategoryEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     PageUtils toQueryPage(Map<String, Object> params);
+
+    List<PmsCategoryEntity> toList();
 }
 

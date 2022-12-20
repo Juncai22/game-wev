@@ -31,5 +31,7 @@ public interface PmsProductService extends IService<PmsProductEntity> {
     void removeEverByIds(List<Long> asList);
 
     void up(PmsProductEntity product);
+
+    PageUtils queryPageImpl(Map<String, Object> params);
 }
 

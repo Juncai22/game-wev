@@ -1,6 +1,7 @@
 package com.example.gamewebpms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.utils.R;
 import com.example.common.vo.PrModel;
 import com.example.gamewebpms.controller.PmsProductAttrValueController;
@@ -9,7 +10,9 @@ import com.example.gamewebpms.entity.*;
 import com.example.gamewebpms.feign.ElSearchFeign;
 import com.example.gamewebpms.service.*;
 import com.example.gamewebpms.vo.AttrVo;
+import com.example.gamewebpms.vo.Impl.ProductImpl;
 import com.example.gamewebpms.vo.PmsProductEveryVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -69,27 +72,32 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
 
         List<PmsProductEntity> list = new ArrayList<>();
         Object key = null;
+        //首先查看各种情况，第一种，有关键词没有，类型
         if (params.get("key") != null && !params.get("key").equals("")) {
             key = params.get("key");
         }
+        //第二种，有类型，但没关键词
         Object category = null;
         if (params.get("category") != null && !params.get("category").equals("") && !params.get("category").equals("全部类型")) {
             category = params.get("category");
         }
+        //第三种都有
         if (key != null && category == null) {
             list = this.list(new QueryWrapper<PmsProductEntity>().like("name", "%" + key + "%"));
         } else if (category != null) {
             Long catId = pmsCategoryService.getOne(new QueryWrapper<PmsCategoryEntity>().eq("name", category)).getCatId();
-
+            //根据类型进行搜寻，得到答案
             List<PmsProductAttrValueEntity> valueEntities = pmsProductAttrValueService.list(
                     new QueryWrapper<PmsProductAttrValueEntity>().eq("attr_id", 1).
                             like("attrImpl_id", catId + ";").or().
                             like("attrImpl_id", "%;" + catId + ";"));
             List<Long> collect = valueEntities.stream().map(PmsProductAttrValueEntity::getPrId).collect(Collectors.toList());
 
+            //如果得到的类型没有则不继续拧添加
             if (collect.size() != 0) {
                 if (key == null) {
                     list = this.listByIds(collect);
+                    //如果有在进行添加
                 } else {
                     HashSet<Long> idByCateGory = new HashSet<>(collect);
                     HashSet<Long> idByKeys = this.list(new QueryWrapper<PmsProductEntity>().like("name", "%" + key + "%"))
@@ -403,10 +411,100 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductDao, PmsProduct
         //赋值完进行远程调用，Feign
         R r = elSearchFeign.savePrModel(model);
 
-        if (r.getCode() == 0){
+        if (r.getCode() == 0) {
             //上架成功,改变状态
             this.updateById(product);
         }
+    }
+
+    @Override
+    public PageUtils queryPageImpl(Map<String, Object> params) {
+        IPage<PmsProductEntity> page = this.page(
+                new Query<PmsProductEntity>().getPage(params),
+                new QueryWrapper<>()
+        );
+
+        IPage<ProductImpl> pageImpl = new Page<>();
+        BeanUtils.copyProperties(page, pageImpl);
+
+        //进行线索搜索
+        List<ProductImpl> listR = new ArrayList<>();
+        List<PmsProductEntity> list = new ArrayList<>();
+        Object key = null;
+        //首先查看各种情况，第一种，有关键词没有，类型
+        if (params.get("key") != null && !params.get("key").equals("")) {
+            key = params.get("key");
+        }
+        //第二种，有类型，但没关键词
+        Object category = null;
+        if (params.get("category") != null && !params.get("category").equals("") && !params.get("category").equals("全部类型")) {
+            category = params.get("category");
+        }
+        //第三种都有
+        if (key != null && category == null) {
+            list = this.list(new QueryWrapper<PmsProductEntity>().like("name", "%" + key + "%"));
+        } else if (category != null) {
+            Long catId = pmsCategoryService.getOne(new QueryWrapper<PmsCategoryEntity>().eq("name", category)).getCatId();
+            //根据类型进行搜寻，得到答案
+            List<PmsProductAttrValueEntity> valueEntities = pmsProductAttrValueService.list(
+                    new QueryWrapper<PmsProductAttrValueEntity>().eq("attr_id", 1).
+                            like("attrImpl_id", catId + ";").or().
+                            like("attrImpl_id", "%;" + catId + ";"));
+            List<Long> collect = valueEntities.stream().map(PmsProductAttrValueEntity::getPrId).collect(Collectors.toList());
+
+            //如果得到的类型没有则不继续拧添加
+            if (collect.size() != 0) {
+                if (key == null) {
+                    list = this.listByIds(collect);
+                    //如果有在进行添加
+                } else {
+                    HashSet<Long> idByCateGory = new HashSet<>(collect);
+                    HashSet<Long> idByKeys = this.list(new QueryWrapper<PmsProductEntity>().like("name", "%" + key + "%"))
+                            .stream().map(PmsProductEntity::getPrId).collect(Collectors.toCollection(HashSet::new));
+
+                    List<Long> ids = new ArrayList<>();
+                    for (Long aLong : idByCateGory) {
+                        if (idByKeys.contains(aLong)) ids.add(aLong);
+                    }
+                    if (ids.size() != 0) {
+                        list = this.listByIds(ids);
+                    }
+                }
+            }
+        }
+
+        //循环当前得到的数据
+        for (PmsProductEntity pmsProductEntity : list) {
+            ProductImpl product = new ProductImpl();
+
+            //进行数据复制，给予Vo
+            BeanUtils.copyProperties(pmsProductEntity, product);
+            String[] split = pmsProductEntity.getDescript().split("-");
+            //将字段进行分割，各自拥有各自的字段
+            product.setVersion(split[0]);
+            product.setGameDesc(split[1]);
+            product.setDisposition(split[2]);
+
+            List<String> categorys = new ArrayList<>();
+
+            //再次进行搜寻答案，得到最终结果
+            String[] attrs = pmsProductAttrValueService.getOne(new QueryWrapper<PmsProductAttrValueEntity>()
+                    .eq("pr_id", product.getPrId()).eq("attr_id", 2L)).getAttrimplId().split(";");
+
+            //将各种属性，分配到每一个地方
+            for (String attr : attrs) {
+                String menu = pmsCategoryService.getById(Long.valueOf(attr)).getName();
+                categorys.add(menu);
+            }
+            //将属性添加
+            product.setCategorys(categorys);
+            //增添新的一个数据
+            listR.add(product);
+        }
+        //将数据保存进入Page
+        pageImpl.setRecords(listR);
+        //进行最终返回
+        return new PageUtils(pageImpl);
     }
 
 }

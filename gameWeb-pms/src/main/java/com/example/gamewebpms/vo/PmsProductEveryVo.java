@@ -1,6 +1,8 @@
 package com.example.gamewebpms.vo;
 
+import com.example.gamewebpms.entity.PmsProductEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
