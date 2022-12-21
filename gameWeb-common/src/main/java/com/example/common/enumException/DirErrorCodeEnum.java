@@ -7,7 +7,9 @@ public enum DirErrorCodeEnum {
 
     //用户错误点
     UserSameError(12001, "用户名重复，请重新输入"),
-    UserRegError(12002, "用户注册发声未知错误");
+    UserRegError(12002, "用户注册发生未知错误"),
+    UserNotHaveError(12003, "用户暂未注册"),
+    UserNotInError(12004, "用户名或密码错误");
 
     private final int code;
 

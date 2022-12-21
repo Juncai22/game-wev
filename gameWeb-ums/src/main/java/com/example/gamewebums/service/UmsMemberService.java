@@ -19,5 +19,7 @@ public interface UmsMemberService extends IService<UmsMemberEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     int reg(MemberVo memberVo);
+
+    int login(MemberVo memberVo);
 }
 

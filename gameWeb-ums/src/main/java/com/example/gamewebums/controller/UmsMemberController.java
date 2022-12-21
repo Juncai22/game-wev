@@ -55,6 +55,19 @@ public class UmsMemberController {
         return R.ok();
     }
 
+    @RequestMapping("/login")
+    public R login(@RequestBody MemberVo memberVo) {
+        int regCheck = umsMemberService.login(memberVo);
+
+        if (regCheck == DirErrorCodeEnum.UserNotHaveError.getCode()) {
+            return R.error(DirErrorCodeEnum.UserNotHaveError.getCode(), DirErrorCodeEnum.UserNotHaveError.getDescription());
+        } else if (regCheck == DirErrorCodeEnum.UserNotInError.getCode()) {
+            return R.error(DirErrorCodeEnum.UserNotInError.getCode(),DirErrorCodeEnum.UserNotInError.getDescription());
+        }
+
+        return R.ok();
+    }
+
 
     /**
      * 信息

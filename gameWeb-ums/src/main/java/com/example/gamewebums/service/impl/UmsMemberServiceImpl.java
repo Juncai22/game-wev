@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -58,12 +59,32 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
         //添加进入member
         memberEntity.setSocialUid(salt);
         memberEntity.setPassword(passWord);
+        memberEntity.setEmail(memberVo.getEmail());
 
         if (!this.save(memberEntity)) {
             return DirErrorCodeEnum.UserRegError.getCode();
         }
 
         return 0;
+    }
+
+    @Override
+    public int login(MemberVo memberVo) {
+        //进行登录的名字搜寻
+        UmsMemberEntity memberEntity = umsMemberDao.selectOne(new QueryWrapper<UmsMemberEntity>()
+                .eq("username", memberVo.getNickName()).or().eq("email",memberVo.getNickName()));
+        //用户名没有则，证明返回错误码
+        if (memberEntity == null) {
+            return DirErrorCodeEnum.UserNotHaveError.getCode();
+        }
+        //盐值
+        String salt = memberEntity.getSocialUid();
+        //密码不正确返回错误吗
+        if (Objects.equals(memberEntity.getPassword(), md5(memberVo.getPassWord() + salt))) {
+            return 0;
+        }else {
+            return DirErrorCodeEnum.UserNotInError.getCode();
+        }
     }
 
     //进行用户名重复检查
