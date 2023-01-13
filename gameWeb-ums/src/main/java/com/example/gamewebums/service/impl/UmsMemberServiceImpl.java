@@ -3,6 +3,8 @@ package com.example.gamewebums.service.impl;
 import com.example.common.enumException.DirErrorCodeEnum;
 import com.example.gamewebums.VO.MemberVo;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -45,6 +47,16 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
         //定义需要保存的user用户
         UmsMemberEntity memberEntity = new UmsMemberEntity();
 
+        if (Strings.isEmpty(memberVo.getNickName()))
+            return DirErrorCodeEnum.UserRegNameEmityError.getCode();
+        else if (Strings.isEmpty(memberVo.getPassWord()))
+            return DirErrorCodeEnum.UserRegPassWordEmityError.getCode();
+        else if (memberVo.getNickName().length() > 8)
+            return DirErrorCodeEnum.UserRegNameToLongError.getCode();
+        else if (18 < memberVo.getPassWord().length() && memberVo.getPassWord().length() < 6)
+            return DirErrorCodeEnum.UserRegPassWordNotRightError.getCode();
+        else if (Strings.isBlank(memberVo.getEmail()))
+            return DirErrorCodeEnum.UserRegEmailEmityError.getCode();
         //进行设置默认数字
         memberEntity.setLevelId(1L);
         memberEntity.setUsername(memberVo.getNickName());
@@ -72,7 +84,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
     public int login(MemberVo memberVo) {
         //进行登录的名字搜寻
         UmsMemberEntity memberEntity = umsMemberDao.selectOne(new QueryWrapper<UmsMemberEntity>()
-                .eq("username", memberVo.getNickName()).or().eq("email",memberVo.getNickName()));
+                .eq("username", memberVo.getNickName()).or().eq("email", memberVo.getNickName()));
         //用户名没有则，证明返回错误码
         if (memberEntity == null) {
             return DirErrorCodeEnum.UserNotHaveError.getCode();
@@ -82,7 +94,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
         //密码不正确返回错误吗
         if (Objects.equals(memberEntity.getPassword(), md5(memberVo.getPassWord() + salt))) {
             return 0;
-        }else {
+        } else {
             return DirErrorCodeEnum.UserNotInError.getCode();
         }
     }

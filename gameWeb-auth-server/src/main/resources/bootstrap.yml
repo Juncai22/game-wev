@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+  application:
+    name: game-auth
+server:
+  port: 14000
+logging:
+  level:
+    com.example.gamewebpms: debug

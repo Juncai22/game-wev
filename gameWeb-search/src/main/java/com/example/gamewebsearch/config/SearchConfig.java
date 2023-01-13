@@ -12,12 +12,15 @@ import org.springframework.context.annotation.Configuration;
 public class SearchConfig {
 
     public static final RequestOptions COMMON_OPTIONS;
+
+    //进行叠加的控制client
     static {
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
 
         COMMON_OPTIONS = builder.build();
     }
 
+    //进行叠加的控制client
     @Bean
     public RestHighLevelClient esRestClient(){
 

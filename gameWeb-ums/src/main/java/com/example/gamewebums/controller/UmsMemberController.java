@@ -31,6 +31,8 @@ public class UmsMemberController {
     @Autowired
     private UmsMemberService umsMemberService;
 
+    private DirErrorCodeEnum dirErrorCodeEnum;
+
     /**
      * 列表
      */
@@ -46,10 +48,8 @@ public class UmsMemberController {
     public R reg(@RequestBody MemberVo memberVo) {
         int regCheck = umsMemberService.reg(memberVo);
 
-        if (regCheck == DirErrorCodeEnum.UserSameError.getCode()) {
-            return R.error(DirErrorCodeEnum.UserSameError.getCode(), DirErrorCodeEnum.UserSameError.getDescription());
-        } else if (regCheck == DirErrorCodeEnum.UserRegError.getCode()) {
-            return R.error(DirErrorCodeEnum.UserRegError.getCode(), DirErrorCodeEnum.UserRegError.getDescription());
+        if (regCheck != 0) {
+            return R.error(regCheck, dirErrorCodeEnum.tochek(regCheck));
         }
 
         return R.ok();
@@ -59,10 +59,8 @@ public class UmsMemberController {
     public R login(@RequestBody MemberVo memberVo) {
         int regCheck = umsMemberService.login(memberVo);
 
-        if (regCheck == DirErrorCodeEnum.UserNotHaveError.getCode()) {
-            return R.error(DirErrorCodeEnum.UserNotHaveError.getCode(), DirErrorCodeEnum.UserNotHaveError.getDescription());
-        } else if (regCheck == DirErrorCodeEnum.UserNotInError.getCode()) {
-            return R.error(DirErrorCodeEnum.UserNotInError.getCode(),DirErrorCodeEnum.UserNotInError.getDescription());
+        if (regCheck != 0) {
+            return R.error(regCheck, dirErrorCodeEnum.tochek(regCheck));
         }
 
         return R.ok();
