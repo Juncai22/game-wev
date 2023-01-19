@@ -2,13 +2,15 @@ package com.example.gamewebums.service.impl;
 
 import com.example.common.enumException.DirErrorCodeEnum;
 import com.example.gamewebums.VO.MemberVo;
+import com.example.gamewebums.entity.UmsMemberLevelEntity;
+import com.example.gamewebums.service.UmsMemberLevelService;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,6 +26,7 @@ import com.example.gamewebums.entity.UmsMemberEntity;
 import com.example.gamewebums.service.UmsMemberService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 
 @Service("umsMemberService")
@@ -31,6 +34,9 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
 
     @Resource
     UmsMemberDao umsMemberDao;
+
+    @Resource
+    UmsMemberLevelService memberLevelService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -46,6 +52,21 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
     public int reg(MemberVo memberVo) {
         //定义需要保存的user用户
         UmsMemberEntity memberEntity = new UmsMemberEntity();
+        //检查验证码
+        String inviteCode = memberVo.getInviteCode();
+        if (inviteCode == null)
+            return DirErrorCodeEnum.UserCodeNotRight.getCode();
+
+        int count = memberLevelService
+                .count(new QueryWrapper<UmsMemberLevelEntity>().eq("name", inviteCode));
+
+        if (count == 0)
+            return DirErrorCodeEnum.UserCodeNotRight.getCode();
+        else
+            memberEntity.setLevelId
+                    (Long.valueOf(memberLevelService.getOne(new QueryWrapper<UmsMemberLevelEntity>()
+                            .eq("name", inviteCode)).getGrowthPoint()));
+
 
         if (Strings.isEmpty(memberVo.getNickName()))
             return DirErrorCodeEnum.UserRegNameEmityError.getCode();
@@ -53,12 +74,11 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
             return DirErrorCodeEnum.UserRegPassWordEmityError.getCode();
         else if (memberVo.getNickName().length() > 8)
             return DirErrorCodeEnum.UserRegNameToLongError.getCode();
-        else if (18 < memberVo.getPassWord().length() && memberVo.getPassWord().length() < 6)
+        else if (18 < memberVo.getPassWord().length() || memberVo.getPassWord().length() < 6)
             return DirErrorCodeEnum.UserRegPassWordNotRightError.getCode();
         else if (Strings.isBlank(memberVo.getEmail()))
             return DirErrorCodeEnum.UserRegEmailEmityError.getCode();
         //进行设置默认数字
-        memberEntity.setLevelId(1L);
         memberEntity.setUsername(memberVo.getNickName());
 
         //检查是否有错误等
@@ -81,21 +101,22 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberDao, UmsMemberEnt
     }
 
     @Override
-    public int login(MemberVo memberVo) {
+    public String login(MemberVo memberVo) {
+
         //进行登录的名字搜寻
         UmsMemberEntity memberEntity = umsMemberDao.selectOne(new QueryWrapper<UmsMemberEntity>()
                 .eq("username", memberVo.getNickName()).or().eq("email", memberVo.getNickName()));
         //用户名没有则，证明返回错误码
         if (memberEntity == null) {
-            return DirErrorCodeEnum.UserNotHaveError.getCode();
+            return String.valueOf(DirErrorCodeEnum.UserNotHaveError.getCode());
         }
         //盐值
         String salt = memberEntity.getSocialUid();
         //密码不正确返回错误吗
         if (Objects.equals(memberEntity.getPassword(), md5(memberVo.getPassWord() + salt))) {
-            return 0;
+            return String.valueOf(0) + ";" + memberEntity.getLevelId();
         } else {
-            return DirErrorCodeEnum.UserNotInError.getCode();
+            return String.valueOf(DirErrorCodeEnum.UserNotInError.getCode());
         }
     }
 

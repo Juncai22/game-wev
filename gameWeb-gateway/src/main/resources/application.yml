@@ -32,3 +32,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
 
+        - id: product_gameweb_route
+          uri: lb://game-pms
+          predicates:
+            - Host=gameweb.com
+
+
+        - id: auth_gameweb_route
+          uri: lb://game-auth
+          predicates:
+            - Host=auth.gameweb.com
+

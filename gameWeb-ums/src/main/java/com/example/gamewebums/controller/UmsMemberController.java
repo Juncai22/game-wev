@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.example.common.enumException.DirErrorCodeEnum;
+import com.example.common.utils.DirErrorUtils;
 import com.example.gamewebums.VO.MemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class UmsMemberController {
     @Autowired
     private UmsMemberService umsMemberService;
 
-    private DirErrorCodeEnum dirErrorCodeEnum;
+    private DirErrorUtils dirErrorUtils = new DirErrorUtils();
 
     /**
      * 列表
@@ -49,7 +50,7 @@ public class UmsMemberController {
         int regCheck = umsMemberService.reg(memberVo);
 
         if (regCheck != 0) {
-            return R.error(regCheck, dirErrorCodeEnum.tochek(regCheck));
+            return R.error(regCheck, dirErrorUtils.tochek(regCheck));
         }
 
         return R.ok();
@@ -57,13 +58,18 @@ public class UmsMemberController {
 
     @RequestMapping("/login")
     public R login(@RequestBody MemberVo memberVo) {
-        int regCheck = umsMemberService.login(memberVo);
+        //得到所有保留的数据
+        String loginCheck = umsMemberService.login(memberVo);
 
-        if (regCheck != 0) {
-            return R.error(regCheck, dirErrorCodeEnum.tochek(regCheck));
+        String[] split = loginCheck.split(";");
+        int check = Integer.parseInt(split[0]);
+
+        if (check != 0) {
+            return R.error(check, dirErrorUtils.tochek(check));
         }
+        memberVo.setLevel(Integer.parseInt(split[1]));
 
-        return R.ok();
+        return R.ok().put("data", memberVo);
     }
 
 

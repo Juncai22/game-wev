@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>com.gameone</groupId>
             <artifactId>gameWeb-common</artifactId>

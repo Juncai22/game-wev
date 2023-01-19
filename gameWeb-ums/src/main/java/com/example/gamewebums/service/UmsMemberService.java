@@ -20,6 +20,6 @@ public interface UmsMemberService extends IService<UmsMemberEntity> {
 
     int reg(MemberVo memberVo);
 
-    int login(MemberVo memberVo);
+    String login(MemberVo memberVo);
 }
 

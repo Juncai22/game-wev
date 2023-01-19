@@ -6,6 +6,12 @@ spring:
 
   application:
     name: game-auth
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.110.133
+    password: '000415'
+    port: 6379
 server:
   port: 14000
 logging:

@@ -26,7 +26,9 @@ public enum DirErrorCodeEnum {
 
     UserNotHaveError(12008, "用户暂未注册"),
 
-    UserNotInError(12009, "用户名或密码错误");
+    UserNotInError(12009, "用户名或密码错误"),
+
+    UserCodeNotRight(12010, "验证码错误");
 
 
     private final int code;
@@ -42,28 +44,6 @@ public enum DirErrorCodeEnum {
         return code;
     }
 
-    public String tochek(int check) {
-        if (check == DirErrorCodeEnum.UserSameError.getCode())
-            return DirErrorCodeEnum.UserSameError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegError.getCode())
-            return DirErrorCodeEnum.UserRegError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegNameEmityError.getCode())
-            return DirErrorCodeEnum.UserRegNameEmityError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegPassWordEmityError.getCode())
-            return DirErrorCodeEnum.UserRegPassWordEmityError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegEmailEmityError.getCode())
-            return DirErrorCodeEnum.UserRegEmailEmityError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegNameToLongError.getCode())
-            return DirErrorCodeEnum.UserRegNameToLongError.getDescription();
-        else if (check == DirErrorCodeEnum.UserRegPassWordNotRightError.getCode())
-            return DirErrorCodeEnum.UserRegPassWordNotRightError.getDescription();
-        else if (check == DirErrorCodeEnum.UserNotHaveError.getCode())
-            return DirErrorCodeEnum.UserNotHaveError.getDescription();
-        else if (check == DirErrorCodeEnum.UserNotInError.getCode())
-            return DirErrorCodeEnum.UserNotInError.getDescription();
-
-        return DirErrorCodeEnum.ServerToError.getDescription();
-    }
 
     public String getDescription() {
         return description;
