@@ -26,6 +26,6 @@ public class SearchConfig {
 
         return new RestHighLevelClient(
                 RestClient.builder(
-                        new HttpHost("192.168.110.132",9200,"http")));
+                        new HttpHost("192.168.110.133",9200,"http")));
     }
 }

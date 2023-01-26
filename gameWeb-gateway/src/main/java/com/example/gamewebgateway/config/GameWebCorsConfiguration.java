@@ -8,7 +8,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
-public class GulimallCorsConfiguration {
+public class GameWebCorsConfiguration {
 
     @Bean
     public CorsWebFilter corsWebFilter(){

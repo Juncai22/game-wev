@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 
 <head>
-<meta charset="utf-8">
-<title>第九艺术网注册页</title>
-<link rel="stylesheet" href="/static/regAndLogin/css/style.css">
+    <meta charset="utf-8">
+    <title>第九艺术网注册页</title>
+    <link rel="stylesheet" href="static/regAndLogin/css/style.css">
 </head>
 
 <body>
@@ -13,13 +13,13 @@
             <h2>欢迎回来</h2>
             <label>
                 <span>电话号码/用户名/邮箱</span>
-                <input  />
+                <input type="userName" id="nickName" />
             </label>
             <label>
                 <span>密码</span>
-                <input type="password" />
+                <input type="password" id="password" />
             </label>
-            <p class="forgot-pass"><a href="/static/regAndLogin/javascript:">忘记密码？</a></p>
+            <p class="forgot-pass"><a href="">忘记密码？</a></p>
             <button type="button" class="submit">登 录</button>
             <button type="button" class="fb-btn">使用 <span>facebook</span> 帐号登录</button>
         </div>
@@ -42,30 +42,77 @@
                 <h2>立即注册</h2>
                 <label>
                     <span>用户名</span>
-                    <input type="text" />
+                    <input type="text" id="newNickName" />
                 </label>
                 <label>
                     <span>密码</span>
-                    <input type="password" />
+                    <input type="password" id="newPassword" />
                 </label>
                 <label>
-                    <span>手机号码</span>
-                    <input />
+                    <span>邮箱</span>
+                    <input type="text" id="newEmail" />
                 </label>
                 <label>
-                    <span>验证码</span>
-                    <input />
+                    <span>邀请码</span>
+                    <input type="text" id="newInviteCode" />
                 </label>
-                <button type="button" class="submit">注 册</button>
+                <button type="button" class="submit" id="btnPOST">注 册</button>
                 <button type="button" class="fb-btn">使用 <span>facebook</span> 帐号注册</button>
             </div>
         </div>
     </div>
+    <script src="static/regAndLogin/js/script.js"></script>
+    <script src="static/regAndLogin/js/jquery.js"></script>
+    <script type="text/javascript">
+        // 验证登录
+        $(function () {
+            $('.submit').on('click', function () {
+                var user = {}
+                user['nickName'] = $('#nickName').val()
+                user['passWord'] = $('#password').val()
+                $.ajax({
+                    url: 'http://auth.gameweb.com/loginvf',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(user),
+                    success: function (seesion) {
+                        if (seesion.code !== 0) {
+                            console.log(' 注册接口返回code不为0');
 
-    <script src="/static/regAndLogin/js/script.js"></script>
-	
-	<div style="text-align:center;">
-</div>
+                        }
+                    }
+                });
+            })
+        })
+
+        // 验证注册
+        $(function () {
+            $('#btnPOST').on('click', function () {
+                var user = {}
+                user["nickName"] = $('#newNickName').val()
+                user["email"] = $('#newEmail').val()
+                user["passWord"] = $('#newPassword').val()
+                user["inviteCode"] = $('#newInviteCode').val()
+                // post提交数据请求
+                $.ajax({
+                    url: 'http://auth.gameweb.com/regin',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(user),
+                    success: function (seesion) {
+                        if (seesion.code !== 0) {
+                            console.log(' 注册接口返回code不为0');
+
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+    <div style="text-align:center;">
+    </div>
 </body>
 
 </html>

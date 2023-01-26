@@ -68,6 +68,7 @@ public class UmsMemberController {
             return R.error(check, dirErrorUtils.tochek(check));
         }
         memberVo.setLevel(Integer.parseInt(split[1]));
+        memberVo.setPassWord(" ");
 
         return R.ok().put("data", memberVo);
     }
