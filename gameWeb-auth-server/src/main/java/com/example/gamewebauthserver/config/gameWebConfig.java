@@ -9,7 +9,6 @@ public class gameWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-
         registry.addViewController("/regAndLogin.html").setViewName("regAndLogin");
     }
 }
